@@ -250,21 +250,14 @@
 </section>
 
 <script>
-  document.addEventListener('alpine:init', () => {
-    Alpine.data('bundleBuilder', (config) => ({
+  function createBundleStateModule(config) {
+    return {
       products: config.products || [],
       requiredItems: config.requiredItems || 3,
       discountPercentage: config.discountPercentage || 15,
       currency: config.currency || 'BRL',
 
       selectedIds: [],
-      subtotal: 0,
-      discountAmount: 0,
-      finalTotal: 0,
-
-      isAdding: false,
-      errorMessage: '',
-      successMessage: '',
 
       init() {
         this.products = (this.products || [])
@@ -289,18 +282,6 @@
         return this.selectedIds.includes(id);
       },
 
-      formatPrice(cents) {
-        const value = (cents || 0) / 100;
-        try {
-          return new Intl.NumberFormat(undefined, {
-            style: 'currency',
-            currency: this.currency
-          }).format(value);
-        } catch (e) {
-          return value.toFixed(2);
-        }
-      },
-
       toggleProduct(product) {
         this.clearMessages();
         const id = product.id;
@@ -316,6 +297,26 @@
           this.selectedIds.push(id);
         }
         this.recalculateTotals();
+      }
+    };
+  }
+
+  function createPricingModule() {
+    return {
+      subtotal: 0,
+      discountAmount: 0,
+      finalTotal: 0,
+
+      formatPrice(cents) {
+        const value = (cents || 0) / 100;
+        try {
+          return new Intl.NumberFormat(undefined, {
+            style: 'currency',
+            currency: this.currency
+          }).format(value);
+        } catch (e) {
+          return value.toFixed(2);
+        }
       },
 
       recalculateTotals() {
@@ -335,7 +336,15 @@
           this.discountAmount = 0;
         }
         this.finalTotal = Math.max(0, this.subtotal - this.discountAmount);
-      },
+      }
+    };
+  }
+
+  function createCartIntegrationModule() {
+    return {
+      isAdding: false,
+      errorMessage: '',
+      successMessage: '',
 
       clearMessages() {
         this.errorMessage = '';
@@ -387,6 +396,14 @@
           this.isAdding = false;
         }
       }
+    };
+  }
+
+  document.addEventListener('alpine:init', () => {
+    Alpine.data('bundleBuilder', (config) => ({
+      ...createBundleStateModule(config),
+      ...createPricingModule(),
+      ...createCartIntegrationModule()
     }));
   });
 </script>
