@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Advanced Bundle Builder – Preview</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="index.js"></script>
   <script defer src="https://unpkg.com/alpinejs@3.13.3/dist/cdn.min.js"></script>
 </head>
 
@@ -99,13 +100,23 @@
       </div>
 
       <div
-        class="mt-10 grid gap-6 border-t border-slate-200 pt-6 md:grid-cols-[minmax(0,2fr),minmax(0,1.2fr)] md:items-end md:gap-10">
+        class="mt-10 grid gap-6 border-t border-slate-200 pt-6 md:grid-cols-[minmax(0,2fr),minmax(0,1.2fr)] md:items-start md:gap-10">
         <div class="space-y-3 text-sm">
           <p class="text-slate-600">
             Selecione exatamente <span class="font-semibold" x-text="requiredItems"></span> produtos para aplicar
             automaticamente <span class="font-semibold" x-text="discountPercentage + '%'"></span> de desconto sobre o
             subtotal.
           </p>
+          <form class="space-y-2">
+            <label class="flex items-center gap-2 text-xs font-medium text-slate-600">
+              <input type="checkbox" class="h-4 w-4 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"
+                x-model="hasObservacao" @change="if (!hasObservacao) observacao = ''">
+              <span>Adicionar observação ao pedido</span>
+            </label>
+            <textarea id="bundle-observacao"
+              class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-900" rows="3"
+              placeholder="Ex: Entregar após as 18h" x-model="observacao" x-show="hasObservacao"></textarea>
+          </form>
           <div x-show="errorMessage"
             class="flex items-start gap-2 rounded-lg border border-red-100 bg-red-50 px-3 py-2 text-xs text-red-700">
             <svg xmlns="http://www.w3.org/2000/svg" class="mt-0.5 h-4 w-4 flex-shrink-0" viewBox="0 0 20 20"
@@ -161,8 +172,6 @@
       </div>
     </div>
   </section>
-
-  <script defer src="index.js"></script>
 </body>
 
 </html>

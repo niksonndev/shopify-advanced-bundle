@@ -11,6 +11,8 @@ document.addEventListener('alpine:init', () => {
     isAdding: false,
     errorMessage: '',
     successMessage: '',
+    hasObservacao: false,
+    observacao: '',
 
     init() {
       this.products = (this.products || []).filter(
