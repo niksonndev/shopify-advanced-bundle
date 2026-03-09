@@ -1,12 +1,3 @@
-{%- comment -%}
-  Advanced Bundle Builder
-  - Stack: Liquid + Tailwind CSS + Alpine.js
-  - Requisitos:
-    * Tailwind CSS disponível no tema (build ou CDN)
-    * Alpine.js v3 carregado globalmente (ex: <script src="https://unpkg.com/alpinejs" defer></script>)
-  - Uso: adicione esta section em qualquer template; escolha a coleção nas configurações.
-{%- endcomment -%}
-
 {%- liquid
   assign bundle_collection = section.settings.collection
   if bundle_collection == blank
@@ -19,7 +10,10 @@
   assign subheading = section.settings.subheading | default: 'Selecione exatamente 3 produtos desta coleção para desbloquear o desconto automático no carrinho.'
 -%}
 
-{%- comment -%} Build JSON array of products (first available variant + product info) for Alpine {%- endcomment -%}
+{%- comment -%} 
+  Build JSON array of products (first available variant + product info) for Alpine           
+{%- endcomment -%}
+
 {%- capture products_json -%}
 [
   {%- if bundle_collection.products.size > 0 -%}
@@ -52,8 +46,7 @@
     currency: {{ shop.currency | json }}
   })"
   x-init="init()"
-  {{ section.shopify_attributes }}
->
+  {{ section.shopify_attributes }}>
 
   <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
     <div class="mb-8 flex flex-col gap-3 text-center sm:mb-10">
@@ -74,24 +67,17 @@
           /
           <span class="font-semibold text-slate-900" x-text="requiredItems"></span>
         </span>
-        <span
-          class="inline-flex items-center rounded-full px-3 py-1 text-[11px] font-semibold"
-          :class="canCheckout()
+        <span class="inline-flex items-center rounded-full px-3 py-1 text-[11px] font-semibold" :class="canCheckout()
             ? 'bg-emerald-100 text-emerald-800'
-            : 'bg-slate-100 text-slate-700'"
-        >
-          <span class="mr-1.5 h-2.5 w-2.5 rounded-full"
-                :class="canCheckout() ? 'bg-emerald-500' : 'bg-slate-400'"></span>
+            : 'bg-slate-100 text-slate-700'">
+          <span class="mr-1.5 h-2.5 w-2.5 rounded-full" :class="canCheckout() ? 'bg-emerald-500' : 'bg-slate-400'"></span>
           <span x-show="!canCheckout()">Complete seu pacote</span>
           <span x-show="canCheckout()">Pacote pronto com desconto</span>
         </span>
       </div>
 
       <div class="h-2 w-full overflow-hidden rounded-full bg-slate-200">
-        <div
-          class="h-full rounded-full bg-emerald-500 transition-all duration-300"
-          :style="`width: ${progressPercentage()}%`"
-        ></div>
+        <div class="h-full rounded-full bg-emerald-500 transition-all duration-300" :style="`width: ${progressPercentage()}%`"></div>
       </div>
     </div>
 
@@ -102,17 +88,19 @@
           :class="isSelected(product.id)
             ? 'border-emerald-500 ring-2 ring-emerald-200'
             : 'border-slate-200 hover:border-slate-300 hover:shadow-md'"
-          @click="toggleProduct(product)"
-        >
+          @click="toggleProduct(product)">
           <div class="absolute right-3 top-3 z-10">
-            <span
-              class="inline-flex h-7 w-7 items-center justify-center rounded-full border text-[11px] font-semibold"
-              :class="isSelected(product.id)
+            <span class="inline-flex h-7 w-7 items-center justify-center rounded-full border text-[11px] font-semibold" :class="isSelected(product.id)
                 ? 'border-emerald-500 bg-emerald-500 text-white'
-                : 'border-slate-300 bg-white text-slate-500'"
-            >
-              <svg x-show="isSelected(product.id)" xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd"
+                : 'border-slate-300 bg-white text-slate-500'">
+              <svg
+                x-show="isSelected(product.id)"
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-3.5 w-3.5"
+                viewBox="0 0 20 20"
+                fill="currentColor">
+                <path
+                  fill-rule="evenodd"
                   d="M16.704 5.29a1 1 0 0 1 .006 1.414l-7.25 7.333a1 1 0 0 1-1.432.006L3.29 9.29A1 1 0 0 1 4.704 7.88l3.01 3.01 6.536-6.536a1 1 0 0 1 1.414-.006z"
                   clip-rule="evenodd" />
               </svg>
@@ -126,12 +114,8 @@
               class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
               :src="product.featured_image?.src"
               :alt="product.featured_image?.alt || product.name"
-              loading="lazy"
-            >
-            <div
-              x-show="!product.featured_image"
-              class="flex h-full w-full items-center justify-center text-xs text-slate-400"
-            >
+              loading="lazy">
+            <div x-show="!product.featured_image" class="flex h-full w-full items-center justify-center text-xs text-slate-400">
               Sem imagem
             </div>
           </div>
@@ -156,8 +140,7 @@
                 class="inline-flex items-center rounded-full border px-3 py-1.5 text-xs font-semibold transition-colors"
                 :class="isSelected(product.id)
                   ? 'border-emerald-500 bg-emerald-50 text-emerald-700'
-                  : 'border-slate-200 bg-slate-50 text-slate-700 group-hover:border-slate-300'"
-              >
+                  : 'border-slate-200 bg-slate-50 text-slate-700 group-hover:border-slate-300'">
                 <span x-show="!isSelected(product.id)">Adicionar</span>
                 <span x-show="isSelected(product.id)">Remover</span>
               </button>
@@ -184,8 +167,13 @@
         </p>
 
         <div x-show="errorMessage" class="flex items-start gap-2 rounded-lg border border-red-100 bg-red-50 px-3 py-2 text-xs text-red-700">
-          <svg xmlns="http://www.w3.org/2000/svg" class="mt-0.5 h-4 w-4 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd"
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="mt-0.5 h-4 w-4 flex-shrink-0"
+            viewBox="0 0 20 20"
+            fill="currentColor">
+            <path
+              fill-rule="evenodd"
               d="M9.401 2.034a1 1 0 0 1 1.198 0l7 5.25A1 1 0 0 1 17.8 9H2.2a1 1 0 0 1-.8-1.716l7-5.25zM3 10a1 1 0 0 1 1-1h12a1 1 0 0 1 .894 1.447l-2.5 5A1 1 0 0 1 13.5 16h-7a1 1 0 0 1-.894-.553l-2.5-5A1 1 0 0 1 3 10z"
               clip-rule="evenodd" />
           </svg>
@@ -193,8 +181,13 @@
         </div>
 
         <div x-show="successMessage" class="flex items-start gap-2 rounded-lg border border-emerald-100 bg-emerald-50 px-3 py-2 text-xs text-emerald-800">
-          <svg xmlns="http://www.w3.org/2000/svg" class="mt-0.5 h-4 w-4 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd"
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="mt-0.5 h-4 w-4 flex-shrink-0"
+            viewBox="0 0 20 20"
+            fill="currentColor">
+            <path
+              fill-rule="evenodd"
               d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16zm3.707-9.707a1 1 0 0 0-1.414-1.414L9 10.172 7.707 8.879a1 1 0 1 0-1.414 1.414l2 2a1 1 0 0 0 1.414 0l4-4z"
               clip-rule="evenodd" />
           </svg>
@@ -226,17 +219,24 @@
             : 'bg-slate-300 cursor-not-allowed'"
           :disabled="!canCheckout() || isAdding"
           :aria-disabled="!canCheckout()"
-          @click="addBundleToCart"
-        >
+          @click="addBundleToCart">
           <svg
             x-show="isAdding"
             class="-ml-1 mr-2 h-4 w-4 animate-spin text-white"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
-            viewBox="0 0 24 24"
-          >
-            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 0 1 8-8v4l3.5-3.5L12 1v4a7 7 0 0 0-7 7h-1z"></path>
+            viewBox="0 0 24 24">
+            <circle
+              class="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              stroke-width="4"></circle>
+            <path
+              class="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 0 1 8-8v4l3.5-3.5L12 1v4a7 7 0 0 0-7 7h-1z"></path>
           </svg>
           <span x-text="canCheckout() ? (isAdding ? 'Adicionando...' : 'Adicionar pacote ao carrinho') : ('Selecione ' + requiredItems + ' produtos para continuar')"></span>
         </button>
@@ -256,37 +256,37 @@
       requiredItems: config.requiredItems || 3,
       discountPercentage: config.discountPercentage || 15,
       currency: config.currency || 'BRL',
-
+  
       selectedIds: [],
-
+  
       init() {
         this.products = (this.products || [])
           .filter(p => p && p.id && typeof p.price === 'number');
         this.recalculateTotals();
       },
-
+  
       get totalSelected() {
         return this.selectedIds.length;
       },
-
+  
       canCheckout() {
         return this.totalSelected === this.requiredItems;
       },
-
+  
       progressPercentage() {
         if (!this.requiredItems) return 0;
         return Math.min(100, Math.round((this.totalSelected / this.requiredItems) * 100));
       },
-
+  
       isSelected(id) {
         return this.selectedIds.includes(id);
       },
-
+  
       toggleProduct(product) {
         this.clearMessages();
         const id = product.id;
         if (!id) return;
-
+  
         if (this.isSelected(id)) {
           this.selectedIds = this.selectedIds.filter(vId => vId !== id);
         } else {
@@ -300,13 +300,13 @@
       }
     };
   }
-
+  
   function createPricingModule() {
     return {
       subtotal: 0,
       discountAmount: 0,
       finalTotal: 0,
-
+  
       formatPrice(cents) {
         const value = (cents || 0) / 100;
         try {
@@ -318,7 +318,7 @@
           return value.toFixed(2);
         }
       },
-
+  
       recalculateTotals() {
         let subtotal = 0;
         const selectedSet = new Set(this.selectedIds);
@@ -328,7 +328,7 @@
           }
         }
         this.subtotal = subtotal;
-
+  
         if (this.canCheckout()) {
           const discount = subtotal * (this.discountPercentage / 100);
           this.discountAmount = Math.round(discount);
@@ -339,34 +339,34 @@
       }
     };
   }
-
+  
   function createCartIntegrationModule() {
     return {
       isAdding: false,
       errorMessage: '',
       successMessage: '',
-
+  
       clearMessages() {
         this.errorMessage = '';
         this.successMessage = '';
       },
-
+  
       buildItemsPayload() {
         return this.selectedIds.map(id => ({ id, quantity: 1 }));
       },
-
+  
       async addBundleToCart() {
         this.clearMessages();
         if (!this.canCheckout()) {
           this.errorMessage = `Selecione exatamente ${this.requiredItems} produtos para completar seu pacote.`;
           return;
         }
-
+  
         const items = this.buildItemsPayload();
         if (!items.length) return;
-
+  
         this.isAdding = true;
-
+  
         try {
           const response = await fetch('/cart/add.js', {
             method: 'POST',
@@ -376,16 +376,16 @@
             },
             body: JSON.stringify({ items })
           });
-
+  
           if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
             const message = errorData.description || errorData.message || 'Não foi possível adicionar o pacote ao carrinho.';
             throw new Error(message);
           }
-
+  
           await response.json();
           this.successMessage = 'Pacote adicionado ao carrinho. Você pode revisar antes de finalizar.';
-
+  
           if (typeof window.dispatchEvent === 'function') {
             window.dispatchEvent(new CustomEvent('cart:refresh'));
           }
@@ -398,7 +398,7 @@
       }
     };
   }
-
+  
   document.addEventListener('alpine:init', () => {
     Alpine.data('bundleBuilder', (config) => ({
       ...createBundleStateModule(config),
@@ -409,58 +409,56 @@
 </script>
 
 {% schema %}
-{
-  "name": "Advanced Bundle Builder",
-  "tag": "section",
-  "class": "section-advanced-bundle",
-  "settings": [
-    {
-      "type": "collection",
-      "id": "collection",
-      "label": "Coleção"
-    },
-    {
-      "type": "range",
-      "id": "required_items",
-      "min": 2,
-      "max": 6,
-      "step": 1,
-      "default": 3,
-      "label": "Quantidade de itens no pacote"
-    },
-    {
-      "type": "range",
-      "id": "discount_percentage",
-      "min": 5,
-      "max": 50,
-      "step": 5,
-      "default": 15,
-      "unit": "%",
-      "label": "Desconto do pacote"
-    },
-    {
-      "type": "text",
-      "id": "heading_title",
-      "label": "Título",
-      "default": "Monte seu pacote e ganhe"
-    },
-    {
-      "type": "text",
-      "id": "heading_highlight",
-      "label": "Destaque do título",
-      "default": "15% OFF"
-    },
-    {
-      "type": "textarea",
-      "id": "subheading",
-      "label": "Subtítulo",
-      "default": "Selecione exatamente 3 produtos desta coleção para desbloquear o desconto automático no carrinho."
-    }
-  ],
-  "presets": [
-    {
-      "name": "Advanced Bundle Builder"
-    }
-  ]
-}
+  {
+    "name": "Advanced Bundle Builder",
+    "tag": "section",
+    "class": "section-advanced-bundle",
+    "settings": [
+      {
+        "type": "collection",
+        "id": "collection",
+        "label": "Coleção"
+      },
+      {
+        "type": "range",
+        "id": "required_items",
+        "min": 2,
+        "max": 6,
+        "step": 1,
+        "default": 3,
+        "label": "Quantidade de itens no pacote"
+      },
+      {
+        "type": "range",
+        "id": "discount_percentage",
+        "min": 5,
+        "max": 50,
+        "step": 5,
+        "default": 15,
+        "unit": "%",
+        "label": "Desconto do pacote"
+      },
+      {
+        "type": "text",
+        "id": "heading_title",
+        "label": "Título",
+        "default": "Monte seu pacote e ganhe"
+      }, {
+        "type": "text",
+        "id": "heading_highlight",
+        "label": "Destaque do título",
+        "default": "15% OFF"
+      }, {
+        "type": "textarea",
+        "id": "subheading",
+        "label": "Subtítulo",
+        "default": "Selecione exatamente 3 produtos desta coleção para desbloquear o desconto automático no carrinho."
+      }
+    ],
+    "presets": [
+      {
+        "name": "Advanced Bundle Builder"
+      }
+    ]
+  }
 {% endschema %}
