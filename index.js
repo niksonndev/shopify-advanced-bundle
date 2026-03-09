@@ -3,7 +3,7 @@ document.addEventListener('alpine:init', () => {
     products: config.products || [],
     requiredItems: config.requiredItems || 3,
     discountPercentage: config.discountPercentage || 15,
-    currency: config.currency || 'BRL',
+    currency: config.currency || 'USD',
     selectedIds: [],
     subtotal: 0,
     discountAmount: 0,
@@ -11,8 +11,8 @@ document.addEventListener('alpine:init', () => {
     isAdding: false,
     errorMessage: '',
     successMessage: '',
-    hasObservacao: false,
-    observacao: '',
+    hasOrderNote: false,
+    orderNote: '',
 
     init() {
       this.products = (this.products || []).filter(
@@ -62,9 +62,7 @@ document.addEventListener('alpine:init', () => {
       } else {
         if (this.selectedIds.length >= this.requiredItems) {
           this.errorMessage =
-            'Você só pode selecionar ' +
-            this.requiredItems +
-            ' produtos neste pacote.';
+            'You can only select exactly 3 products in this bundle.';
           return;
         }
         this.selectedIds.push(id);
@@ -101,9 +99,9 @@ document.addEventListener('alpine:init', () => {
       this.clearMessages();
       if (!this.canCheckout()) {
         this.errorMessage =
-          'Selecione exatamente ' +
+          'Select exactly ' +
           this.requiredItems +
-          ' produtos para completar seu pacote.';
+          ' products to complete your bundle.';
         return;
       }
       const items = this.buildItemsPayload();
@@ -123,16 +121,16 @@ document.addEventListener('alpine:init', () => {
           throw new Error(
             errorData.description ||
               errorData.message ||
-              'Não foi possível adicionar o pacote ao carrinho.',
+              'Could not add the bundle to cart.',
           );
         }
         await response.json();
-        this.successMessage = 'Pacote adicionado ao carrinho.';
+        this.successMessage = 'Bundle added to cart.';
       } catch (error) {
         console.error('[Bundle Builder]', error);
         this.errorMessage =
           error.message ||
-          'Erro ao adicionar (preview local: /cart/add.js não existe aqui).';
+          'Error adding (local preview: /cart/add.js does not exist here).';
       } finally {
         this.isAdding = false;
       }
