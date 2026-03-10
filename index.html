@@ -53,7 +53,9 @@
           </span>
         </div>
         <div class="h-2 w-full overflow-hidden rounded-full bg-slate-200">
-          <div class="h-full rounded-full bg-emerald-500 transition-all duration-300" style="width: 0%"
+          <div
+            class="h-full rounded-full bg-emerald-500 transition-[width] duration-300 ease-out"
+            style="width: 0%"
             :style="'width: ' + progressPercentage() + '%'"></div>
         </div>
       </div>
@@ -119,13 +121,13 @@
             </label>
             <textarea id="bundle-order-note"
               class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-900" rows="3"
-              placeholder="e.g. Deliver after 6pm" x-model="orderNote" x-show="hasOrderNote" x-cloak
+              placeholder="e.g. Deliver after 6pm" x-model="orderNote" x-show="hasOrderNote" x-cloak x-transition
               maxlength="500"></textarea>
-            <p x-show="hasOrderNote" x-cloak class="text-xs text-slate-500">
+            <p x-show="hasOrderNote" x-cloak x-transition class="text-xs text-slate-500">
               <span x-text="500 - (orderNote || '').length + ' characters remaining'"></span>
             </p>
           </form>
-          <div x-show="errorMessage" x-cloak
+          <div x-show="errorMessage" x-cloak x-transition
             class="flex items-start gap-2 rounded-lg border border-red-100 bg-red-50 px-3 py-2 text-xs text-red-700">
             <svg xmlns="http://www.w3.org/2000/svg" class="mt-0.5 h-4 w-4 flex-shrink-0" viewBox="0 0 20 20"
               fill="currentColor">
@@ -135,7 +137,7 @@
             </svg>
             <span x-text="errorMessage"></span>
           </div>
-          <div x-show="successMessage" x-cloak
+          <div x-show="successMessage" x-cloak x-transition
             class="flex items-start gap-2 rounded-lg border border-emerald-100 bg-emerald-50 px-3 py-2 text-xs text-emerald-800">
             <svg xmlns="http://www.w3.org/2000/svg" class="mt-0.5 h-4 w-4 flex-shrink-0" viewBox="0 0 20 20"
               fill="currentColor">

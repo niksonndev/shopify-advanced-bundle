@@ -78,7 +78,7 @@
 
       <div class="h-2 w-full overflow-hidden rounded-full bg-slate-200">
         <div
-          class="h-full rounded-full bg-emerald-500 transition-all duration-300"
+          class="h-full rounded-full bg-emerald-500 transition-[width] duration-300 ease-out"
           style="width: 0%"
           :style="`width: ${progressPercentage()}%`"></div>
       </div>
@@ -177,6 +177,7 @@
         <div
           x-show="errorMessage"
           x-cloak
+          x-transition
           class="flex items-start gap-2 rounded-lg border border-red-100 bg-red-50 px-3 py-2 text-xs text-red-700">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -194,6 +195,7 @@
         <div
           x-show="successMessage"
           x-cloak
+          x-transition
           class="flex items-start gap-2 rounded-lg border border-emerald-100 bg-emerald-50 px-3 py-2 text-xs text-emerald-800">
           <svg
             xmlns="http://www.w3.org/2000/svg"
