@@ -21,19 +21,15 @@ document.addEventListener('alpine:init', () => {
       this.recalculateTotals();
     },
 
-    get totalSelected() {
-      return this.selectedIds.length;
-    },
-
     canCheckout() {
-      return this.totalSelected === this.requiredItems;
+      return this.selectedIds.length === this.requiredItems;
     },
 
     progressPercentage() {
       if (!this.requiredItems) return 0;
       return Math.min(
         100,
-        Math.round((this.totalSelected / this.requiredItems) * 100),
+        Math.round((this.selectedIds.length / this.requiredItems) * 100),
       );
     },
 
@@ -53,16 +49,17 @@ document.addEventListener('alpine:init', () => {
       }
     },
 
-    toggleProduct(product) {
+    toggleProduct(id) {
       this.clearMessages();
-      const id = product.id;
       if (!id) return;
       if (this.isSelected(id)) {
         this.selectedIds = this.selectedIds.filter((vId) => vId !== id);
       } else {
         if (this.selectedIds.length >= this.requiredItems) {
           this.errorMessage =
-            'You can only select exactly 3 products in this bundle.';
+            'You can only select ' +
+            this.requiredItems +
+            ' products to complete your bundle.';
           return;
         }
         this.selectedIds.push(id);

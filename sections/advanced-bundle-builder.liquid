@@ -11,7 +11,7 @@
 -%}
 
 {%- comment -%} 
-  Build JSON array of products (first available variant + product info) for Alpine           
+    Build JSON array of products (first available variant + product info) for Alpine           
 {%- endcomment -%}
 
 {%- capture products_json -%}
@@ -71,13 +71,16 @@
             ? 'bg-emerald-100 text-emerald-800'
             : 'bg-slate-100 text-slate-700'">
           <span class="mr-1.5 h-2.5 w-2.5 rounded-full" :class="canCheckout() ? 'bg-emerald-500' : 'bg-slate-400'"></span>
-          <span x-show="!canCheckout()">Complete your bundle</span>
-          <span x-show="canCheckout()">Bundle ready with discount</span>
+          <span x-show="!canCheckout()" x-cloak>Complete your bundle</span>
+          <span x-show="canCheckout()" x-cloak>Bundle ready with discount</span>
         </span>
       </div>
 
       <div class="h-2 w-full overflow-hidden rounded-full bg-slate-200">
-        <div class="h-full rounded-full bg-emerald-500 transition-all duration-300" :style="`width: ${progressPercentage()}%`"></div>
+        <div
+          class="h-full rounded-full bg-emerald-500 transition-all duration-300"
+          style="width: 0%"
+          :style="`width: ${progressPercentage()}%`"></div>
       </div>
     </div>
 
@@ -95,6 +98,7 @@
                 : 'border-slate-300 bg-white text-slate-500'">
               <svg
                 x-show="isSelected(product.id)"
+                x-cloak
                 xmlns="http://www.w3.org/2000/svg"
                 class="h-3.5 w-3.5"
                 viewBox="0 0 20 20"
@@ -104,18 +108,22 @@
                   d="M16.704 5.29a1 1 0 0 1 .006 1.414l-7.25 7.333a1 1 0 0 1-1.432.006L3.29 9.29A1 1 0 0 1 4.704 7.88l3.01 3.01 6.536-6.536a1 1 0 0 1 1.414-.006z"
                   clip-rule="evenodd" />
               </svg>
-              <span x-show="!isSelected(product.id)">+</span>
+              <span x-show="!isSelected(product.id)" x-cloak>+</span>
             </span>
           </div>
 
           <div class="relative aspect-[4/3] overflow-hidden bg-slate-100">
             <img
               x-show="product.featured_image"
+              x-cloak
               class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
               :src="product.featured_image?.src"
               :alt="product.featured_image?.alt || product.name"
               loading="lazy">
-            <div x-show="!product.featured_image" class="flex h-full w-full items-center justify-center text-xs text-slate-400">
+            <div
+              x-show="!product.featured_image"
+              x-cloak
+              class="flex h-full w-full items-center justify-center text-xs text-slate-400">
               No image
             </div>
           </div>
@@ -141,8 +149,8 @@
                 :class="isSelected(product.id)
                   ? 'border-emerald-500 bg-emerald-50 text-emerald-700'
                   : 'border-slate-200 bg-slate-50 text-slate-700 group-hover:border-slate-300'">
-                <span x-show="!isSelected(product.id)">Add</span>
-                <span x-show="isSelected(product.id)">Remove</span>
+                <span x-show="!isSelected(product.id)" x-cloak>Add</span>
+                <span x-show="isSelected(product.id)" x-cloak>Remove</span>
               </button>
             </div>
           </div>
@@ -166,7 +174,10 @@
           discount on the subtotal.
         </p>
 
-        <div x-show="errorMessage" class="flex items-start gap-2 rounded-lg border border-red-100 bg-red-50 px-3 py-2 text-xs text-red-700">
+        <div
+          x-show="errorMessage"
+          x-cloak
+          class="flex items-start gap-2 rounded-lg border border-red-100 bg-red-50 px-3 py-2 text-xs text-red-700">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             class="mt-0.5 h-4 w-4 flex-shrink-0"
@@ -180,7 +191,10 @@
           <span x-text="errorMessage"></span>
         </div>
 
-        <div x-show="successMessage" class="flex items-start gap-2 rounded-lg border border-emerald-100 bg-emerald-50 px-3 py-2 text-xs text-emerald-800">
+        <div
+          x-show="successMessage"
+          x-cloak
+          class="flex items-start gap-2 rounded-lg border border-emerald-100 bg-emerald-50 px-3 py-2 text-xs text-emerald-800">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             class="mt-0.5 h-4 w-4 flex-shrink-0"
@@ -222,6 +236,7 @@
           @click="addBundleToCart">
           <svg
             x-show="isAdding"
+            x-cloak
             class="-ml-1 mr-2 h-4 w-4 animate-spin text-white"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
