@@ -4,28 +4,35 @@ A high-performance, conversion-focused bundling solution for Shopify. This Proof
 
 ![Preview](./demo.gif)
 
-## 🚀 Tech Stack & Rationale
+## Tech
 
-* **Alpine.js v3**: Core reactive state management. Chosen for its minimal footprint and ability to handle complex bundling logic (discounts, validations, and AJAX API payloads) without the overhead of heavy frameworks.
-* **Tailwind CSS**: Utility-first styling for a fully responsive, clean, and professional UI.
-* **Liquid Architecture**: The project follows Shopify's Theme OS 2.0 structure (`sections/` and `snippets/`) for production-ready organization.
-* **Shopify AJAX API**: Pre-wired for `/cart/add.js` integration, capable of injecting multiple items into the cart in a single request.
+- **Alpine.js** – reactive state, no build step
+- **Tailwind CSS** – styling via CDN
+- **Liquid** – Shopify sections/snippets
+- **Shopify AJAX API** – `/cart/add.js` for multi-item add
 
-## 🛠️ Key Features
+## Features
 
-* **Real-time Logic**: Subtotal and discount calculations update instantly as users toggle products.
-* **Visual Feedback**: Progress bar and state-driven badges (Alpine.js) guide the user to complete the bundle.
-* **Business Rules**: Logic enforced to ensure exactly 3 items are selected before enabling the checkout, preventing cart errors.
-* **Mock Environment**: Includes a standalone `index.html` for immediate previewing without a live Shopify store.
+- Select exactly N products to form a bundle (configurable 2–6 items)
+- Automatic percentage discount (5–50%)
+- Progress bar and real-time pricing
+- Adds bundle to cart via Shopify `/cart/add.js`
 
-## 📂 Project Structure
+## How to
 
-- `theme/sections/advanced-bundle-builder.liquid`: Main UI component and Liquid logic.
-- `theme/snippets/`: Decoupled scripts and styles for better maintainability.
-- `index.html`: Static preview file using mock data for demonstration purposes.
+**Preview locally**
 
-## 📝 How to View
-Simply open `index.html` in your browser to see the Alpine.js reactivity and Tailwind layout in action. For Shopify integration, refer to the files inside the `theme/` directory.
+1. Serve with a static server (e.g. Live Server in VS Code).
+2. Open `index.html`.
 
-## 📄 License
-This project is licensed under the [MIT License](LICENSE).
+Cart add will fail locally—that's expected.
+
+**Use in Shopify**
+
+1. Copy `sections/advanced-bundle-builder.liquid` into your theme's `sections/` folder.
+2. In the theme editor: Add section → **Advanced Bundle Builder**.
+3. Configure: pick a collection, set items count (2–6) and discount % (5–50).
+
+## License
+
+MIT. See [LICENSE](LICENSE).
